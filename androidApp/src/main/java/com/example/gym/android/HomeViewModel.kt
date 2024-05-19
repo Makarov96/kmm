@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
 import com.example.gym.api.HomeRepository
+import com.example.gym.api.httpModule
 import com.example.gym.data.Product
+import com.example.gym.injector.Injector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -30,8 +32,9 @@ class HomeViewModel(private val repository: HomeRepository):ViewModel() {
     }
 }
 
-val homeModule = module {
-    singleOf(::HomeRepository){HomeRepository()}
+val homeViewModule = module {
+
+//   singleOf(::HomeRepository)
     viewModelOf(::HomeViewModel)
 }
 

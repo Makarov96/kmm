@@ -1,6 +1,7 @@
 [versions]
 agp = "8.4.0"
 
+coil = "2.6.0"
 kotlin = "1.9.23"
 compose = "1.6.7"
 compose-compiler = "1.5.13"
@@ -18,6 +19,7 @@ material3 = "1.2.1"
 lifecycleRuntimeComposeAndroid = "2.8.0"
 
 [libraries]
+coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 koin-androidx-compose-v356 = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }

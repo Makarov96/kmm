@@ -17,7 +17,8 @@ struct HomeView:View {
     let sample = HelloWorld().sample()
     let sum = HelloWorld().sum(value: 2, value2: 4)
     var viewModel:ProductViewModel = ProductViewModel()
-
+    
+  
     
     var body: some View {
         ScrollView{
@@ -26,12 +27,21 @@ struct HomeView:View {
                 Text("\(sum)")
                     .onAppear {
                         viewModel.data()
-                        viewModel.dataFlow()
+//                        viewModel.dataFlow()
                     }
                 
                 LazyVStack(content: {
                     ForEach(viewModel.sharedData, id: \.self) { count in
                         Text("Placeholder \(count.brand)")
+                      
+                        AsyncImage(url: URL(string:count.thumbnail )) { image in
+                            image.resizable()
+                                .aspectRatio(contentMode: .fit)
+                        } placeholder: {
+                            EmptyView()
+                        }
+
+                         
                     }
                 })
                 Divider()
@@ -52,14 +62,17 @@ struct HomeView:View {
 @available(iOS 17.0, *)
 @Observable
 class ProductViewModel{
-    @ObservationIgnored
-    let repository:HomeRepository = HomeRepository.init()
+   
     var sharedData:Array<Product> = []
     var sharedDataFlow:Array<Product> = []
+    
+    
   
     func data(){
+      
         Task{
-            let products = try await repository.getProductsWithoutFlow()
+          
+            let products = try await RepositoryHelper.init().products()
             
             sharedData.append(contentsOf: products)
         }
@@ -67,9 +80,9 @@ class ProductViewModel{
     
     func dataFlow(){
         Task{
-            for await product in  repository.getProductFlow(){
-                sharedDataFlow.append(contentsOf: product)
-            }
+//            for await product in  RepositoryHelper.init().productsFlow(){
+//                sharedDataFlow.append(contentsOf: product)
+//            }
           
         }
     }
