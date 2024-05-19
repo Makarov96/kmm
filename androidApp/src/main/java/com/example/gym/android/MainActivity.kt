@@ -1,9 +1,10 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.gym.android
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,16 +13,25 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.gym.data.Product
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.context.startKoin
 
 
 class MainActivity : ComponentActivity() {
-    private val homeViewModel: HomeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModel<HomeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        startKoin {
+
+            modules( homeModule)
+
+        }
+
         setContent {
             val products = homeViewModel.product.collectAsStateWithLifecycle(
                 lifecycleOwner = androidx.compose.ui.platform.LocalLifecycleOwner.current
@@ -36,9 +46,27 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
+
 @Composable
-fun AndroidApp(products:List<Product>) {
-      Scaffold {
+fun AndroidApp(products: List<Product>) {
+      Scaffold(
+          topBar = {
+              TopAppBar(title = {
+                  Text(text = "Welcome to KMM") },
+                  colors = TopAppBarColors(
+                      containerColor = Color.Black,
+                      actionIconContentColor = Color.Red,
+                      scrolledContainerColor = Color.Transparent,
+                      titleContentColor = Color.White,
+                      navigationIconContentColor = Color.Cyan,
+                  ),
+
+
+              )
+          }
+      ) {
+
           it ->
          LazyColumn(modifier = Modifier.padding(it)) {
                 items(products, key = {product -> product.id.toString()}){
@@ -51,13 +79,22 @@ fun AndroidApp(products:List<Product>) {
                     }
                 }
          }
+
+
       }
 }
+
+
 
 @Preview
 @Composable
 fun DefaultPreview() {
+
     MyApplicationTheme {
-        AndroidApp(listOf())
+        AndroidApp(products = listOf(
+            Product(title = "Sample", id = 0, brand = "", price = 200, stock = 10, discountPercentage = 2.0, images = arrayListOf(), rating = 2.0, category = "None", thumbnail = "", description = "Hello",
+            )
+        )
+        )
     }
 }
