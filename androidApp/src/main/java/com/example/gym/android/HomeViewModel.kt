@@ -34,7 +34,7 @@ class HomeViewModel(private val repository: HomeRepository):ViewModel() {
 
 val homeViewModule = module {
 
-//   singleOf(::HomeRepository)
+
     viewModelOf(::HomeViewModel)
 }
 

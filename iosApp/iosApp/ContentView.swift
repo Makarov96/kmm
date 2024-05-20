@@ -3,7 +3,6 @@ import shared
 
 @available(iOS 17.0, *)
 struct ContentView: View {
- 
     var body: some View{
         HomeView()
     }
@@ -21,37 +20,45 @@ struct HomeView:View {
   
     
     var body: some View {
-        ScrollView{
-            VStack{
-                
-                Text("\(sum)")
-                    .onAppear {
-                        viewModel.data()
-//                        viewModel.dataFlow()
-                    }
-                
-                LazyVStack(content: {
-                    ForEach(viewModel.sharedData, id: \.self) { count in
-                        Text("Placeholder \(count.brand)")
-                      
-                        AsyncImage(url: URL(string:count.thumbnail )) { image in
-                            image.resizable()
-                                .aspectRatio(contentMode: .fit)
-                        } placeholder: {
-                            EmptyView()
+        NavigationStack{
+            
+            ScrollView{
+                VStack{
+                    
+                    Text("\(sum)")
+                        .onAppear {
+                            viewModel.data()
+                            viewModel.dataFlow()
                         }
+                    
+                    LazyVStack(content: {
+                        ForEach(viewModel.sharedData, id: \.self) { count in
+                            Text("Placeholder \(count.brand)")
+                          
+                            AsyncImage(url: URL(string:count.thumbnail )) { image in
+                                image.resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            } placeholder: {
+                                EmptyView()
+                            }
 
-                         
-                    }
-                })
-                Divider()
-                LazyVStack(content: {
-                    ForEach(viewModel.sharedData, id: \.self) { count in
-                        Text("Placeholder \(count.brand)")
-                    }
-                })
+                             
+                        }
+                    })
+                    Divider()
+                    LazyVStack(content: {
+                        ForEach(viewModel.sharedData, id: \.self) { count in
+                            Text("Placeholder \(count.brand)")
+                        }
+                    })
+                }
             }
+            .navigationTitle("Welcome to KMM")
+           
         }
+        .padding([.horizontal], 16)
+        
+           
             
     }
         
@@ -80,9 +87,9 @@ class ProductViewModel{
     
     func dataFlow(){
         Task{
-//            for await product in  RepositoryHelper.init().productsFlow(){
-//                sharedDataFlow.append(contentsOf: product)
-//            }
+            for await product in  RepositoryHelper.init().productsFlow(){
+                sharedDataFlow.append(contentsOf: product)
+            }
           
         }
     }

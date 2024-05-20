@@ -37,12 +37,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         startKoin {
-
-
             modules(    Injector.appModule() + homeViewModule)
 
         }
-
 
         setContent {
             val products = homeViewModel.product.collectAsStateWithLifecycle(

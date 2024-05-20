@@ -7,16 +7,6 @@ import kotlinx.serialization.json.Json
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-//val httpClient = HttpClient(){
-//    install(ContentNegotiation){
-//        json(Json {
-//            ignoreUnknownKeys = true
-//            prettyPrint = true
-//
-//
-//        })
-//    }
-//}
 
 val httpModule = module {
    single { HttpClient(){

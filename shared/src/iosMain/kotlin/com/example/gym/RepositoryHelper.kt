@@ -12,7 +12,7 @@ import org.koin.core.context.startKoin
 class RepositoryHelper: KoinComponent {
     private val repository:HomeRepository by inject()
     suspend fun products() : List<Product> = repository.getProductsWithoutFlow()
-    suspend fun productsFlow() : Flow<List<Product>> = repository.getProductFlow()
+     fun productsFlow() : Flow<List<Product>> = repository.getProductFlow()
 
     suspend fun modelFromJson() : ProductFromJson = repository.getProducts()
 
